@@ -18,8 +18,9 @@ The plugin **never edits or replaces the ItemStack**. Enchantments, exact durabi
 ## Install
 
 1. Use Spigot or Paper Minecraft server 1.21 or newer (Java 21).
-2. Replace the previous `MaceNoDespawn-1.0.0.jar` (if installed) with `MaceNoDespawn-1.1.0.jar` in the server's `plugins` folder.
-3. Restart the server.
+2. Download [MaceNoDespawn-1.1.0.jar](dist/MaceNoDespawn-1.1.0.jar).
+3. Replace the previous `MaceNoDespawn-1.0.0.jar` (if installed) with `MaceNoDespawn-1.1.0.jar` in the server's `plugins` folder.
+4. Restart the server.
 
 No configuration, commands, or permissions.
 
