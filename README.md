@@ -1,29 +1,34 @@
-# MaceNoDespawn 1.1.0
+# MaceNoDespawn v1.1.1
 
-Small server-side Minecraft plugin for **Spigot/Paper 1.21+**.
+Lightweight server-side plugin for Minecraft **Spigot, Paper, and Leaf 1.21+**.
 
 ## Behavior
 
-While a mace is a dropped item entity:
+Only while an item is a **dropped mace**, the plugin:
 
-- Its normal five-minute despawn is cancelled.
-- Incoming item damage (including lava, fire, explosions, and cactus) is cancelled, **except VOID damage**.
-- Combustion/ignition is cancelled.
-- It can still fall into the void and be removed there.
+- Cancels natural item despawning.
+- Prevents fire, lava, explosions, cactus, and other event-driven damage.
+- Still permits **void damage**, so dropping a mace into the void removes it.
+- Makes **no changes** to the dropped mace's item stack; names, enchantments, durability, lore, and custom metadata are retained.
+- Does not modify other materials, inventories, or normal player pickups.
 
-The plugin **never edits or replaces the ItemStack**. Enchantments, exact durability, name, lore, and other metadata remain unchanged. No other materials are affected. Regular player pickup, storage, and game mechanics still work.
-
-**Limitations:** Server commands, other plugins, or direct entity removal mechanisms can still remove an item. Protections operate through standard Bukkit events; no Bukkit plugin can guarantee protection from every external plugin or administrator command. Maces held in inventories are not protected by this plugin.
+Note: This plugin does not attempt to block administrative commands, direct removal by other plugins, or world resets. Those can remove items without a cancellable Bukkit damage/despawn event.
 
 ## Install
 
-1. Use Spigot or Paper Minecraft server 1.21 or newer (Java 21).
-2. Download [MaceNoDespawn-1.1.0.jar](dist/MaceNoDespawn-1.1.0.jar).
-3. Replace the previous `MaceNoDespawn-1.0.0.jar` (if installed) with `MaceNoDespawn-1.1.0.jar` in the server's `plugins` folder.
-4. Restart the server.
+1. Stop your server.
+2. **Delete `MaceNoDespawn-1.1.0.jar`** (and any older copies) from the `plugins` folder.
+3. Copy `MaceNoDespawn-1.1.1.jar` from `dist/` into the `plugins` folder.
+4. Restart the server, and look for a message starting with `Enabled: dropped maces` after `[MaceNoDespawn] Enabling MaceNoDespawn v1.1.1`.
 
-No configuration, commands, or permissions.
+There are no commands or config files.
+
+## Fixed in v1.1.1
+
+The previous binary was accidentally compiled against an incorrect API stub and linked to a non-existent `PluginManager.registerEvents(Listener, JavaPlugin)` method. Leaf 26.3 therefore disabled it during startup with `NoSuchMethodError`.
+
+The corrected JAR now links to the official Bukkit `PluginManager.registerEvents(Listener, Plugin)` signature, fixing that startup failure. Event behavior and the void exception remain as intended.
 
 ## Build from source
 
-With JDK 21 and Maven installed, run `mvn package` to build `target/MaceNoDespawn-1.1.0.jar` against the Spigot API dependency declared in `pom.xml`.
+With Java 21 and Maven: `mvn -B package`. Maven resolves the official Spigot API with `provided` scope; **no Bukkit classes are bundled** in the plugin JAR. The bundled `dist/` artifact has been locally validated against a minimal API-compatible test harness, including listener registration, event cancellation, and void exception. It has not been run on an actual Leaf server in this environment.

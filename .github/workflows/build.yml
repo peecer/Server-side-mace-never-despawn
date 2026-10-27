@@ -1,0 +1,23 @@
+name: Build and verify plugin
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Compile against official Spigot API
+        run: mvn --batch-mode --no-transfer-progress clean package
+      - name: Assert registered listener method matches Bukkit API
+        run: |
+          javap -c -classpath target/MaceNoDespawn-1.1.1.jar io.github.macenodespawn.MaceNoDespawn | grep -F 'org/bukkit/plugin/PluginManager.registerEvents:(Lorg/bukkit/event/Listener;Lorg/bukkit/plugin/Plugin;)V'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: MaceNoDespawn-1.1.1
+          path: target/MaceNoDespawn-1.1.1.jar

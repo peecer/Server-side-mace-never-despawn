@@ -1,5 +1,5 @@
 name: MaceNoDespawn
-version: 1.1.0
+version: 1.1.1
 main: io.github.macenodespawn.MaceNoDespawn
 api-version: '1.21'
-description: Keeps dropped maces safe from despawning, fire and damage except void.
+description: Prevents dropped maces from despawning or burning, and protects them from damage except the void.
